@@ -1,15 +1,14 @@
 ### Date created
-Include the date you created this project and README file.
+10/05/2020
 
 ### Project Title
-Replace the Project Title
+US Bikeshare Data Exploration Code
 
 ### Description
-Describe what your project is about and what it does
+This project is a script written in Python. It explores data related to bike share systems for 3 cities (Chicago, New York City, Washington)
 
 ### Files used
-Include the files used
-
-### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
-
+chicago.csv
+new_york_city.csv
+washington.csv
+bikeshare_2.py
