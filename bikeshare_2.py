@@ -105,21 +105,21 @@ def time_stats(df):
         most_common_month, month_count = most_common_compute(df['Month'])
         #convert most_common_month digit in str through a list comprehension in case of more than one month
         most_common_month = [month_selection[month].title() for month in most_common_month]
-        display_result(most_common_month, month_count)
-        nan_count(df['Month'])
+        display(most_common_month, month_count)
+        null_count(df['Month'])
 
     # display the most common day of week only if all day of week are specified
     if day == 'all':
         print('\nCalculating the Most Common Day of Week:')
         most_common_dow, dow_count = most_common_compute(df['Day of Week'])
-        display_result(most_common_dow, dow_count)
-        nan_count(df['Day of Week'])
+        display(most_common_dow, dow_count)
+        null_count(df['Day of Week'])
 
     # display the most common start hour
     print('\nCalculating the Most Common Start Hour:')
     most_common_hour, hour_count = most_common_compute(df['Hour'])
-    display_result(most_common_hour, hour_count)
-    nan_count(df['Hour'])
+    display(most_common_hour, hour_count)
+    null_count(df['Hour'])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -134,22 +134,22 @@ def station_stats(df):
     # display most commonly used start station
     print('\nCalculating the Most Commonly used Start Station:')
     most_start_station, start_count = most_common_compute(df['Start Station'])
-    display_result(most_start_station, start_count)
-    nan_count(df['Start Station'])
+    display(most_start_station, start_count)
+    null_count(df['Start Station'])
 
     # display most commonly used end station
     print('\nCalculating the Most Commonly used End Station:')
     most_end_station, end_count = most_common_compute(df['End Station'])
-    display_result(most_end_station, end_count)
-    nan_count(df['End Station'])
+    display(most_end_station, end_count)
+    null_count(df['End Station'])
 
     # display most frequent combination of start station and end station trip
     print('\nCalculating the Most Frequent Trip (Start Station, End Station):')
     trip_ds = df.groupby(['Start Station', 'End Station'])['Start Station'].count()
     startend_most_count = trip_ds.max()
     trip_stations = trip_ds[trip_ds == startend_most_count].index
-    display_result(trip_stations, startend_most_count)
-    nan_count(trip_ds)
+    display(trip_stations, startend_most_count)
+    null_count(trip_ds)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -165,13 +165,13 @@ def trip_duration_stats(df):
     print('\nCalculating Total Travel Time:')
     hours, minutes, seconds = convert_sec(df['Trip Duration'].sum())
     print('{} Hours {} Minutes {} Seconds'.format(hours, minutes, seconds))
-    nan_count(df['Trip Duration'])
+    null_count(df['Trip Duration'])
 
     # display mean travel time
     print('\nCalculating Mean Travel Time:')
     hours, minutes, seconds = convert_sec(round(df['Trip Duration'].mean()))
     print('{} Hours {} Minutes {} Seconds'.format(hours, minutes, seconds))
-    nan_count(df['Trip Duration'])
+    null_count(df['Trip Duration'])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -189,7 +189,7 @@ def user_stats(df):
     #iterates through a loop to display the different user types and the count from it
     for i in user_ds:
         print('{}: {}%'.format(user_ds.index[i], user_ds[i]))
-    nan_count(df['User Type'])
+    null_count(df['User Type'])
 
     if city != 'washington':
         # Display counts of gender
@@ -198,24 +198,24 @@ def user_stats(df):
         #iterates through a loop to display the different Gender and the count from it
         for i in gender_ds:
             print('{}: {}%'.format(gender_ds.index[i], gender_ds[i]))
-        nan_count(df['Gender'])
+        null_count(df['Gender'])
 
         # Display earliest, most recent, and most common year of birth
         birth_year_ds = df['Birth Year']
         print('\nCalculating Earliest Year of Birth User:')
         min_year = round(birth_year_ds.min())
-        min_year_count = number_trip(birth_year_ds, min_year)
-        display_result(min_year, min_year_count)
+        min_year_count = count_trip(birth_year_ds, min_year)
+        display(min_year, min_year_count)
 
         print('\nCalculating Most Recent Year of Birth User:')
         max_year = round(birth_year_ds.max())
-        max_year_count = number_trip(birth_year_ds, max_year)
-        display_result(max_year, max_year_count)
+        max_year_count = count_trip(birth_year_ds, max_year)
+        display(max_year, max_year_count)
 
         print('\nCalculating Most Common Year of Birth User:')
         most_year, most_year_count = most_common_compute(birth_year_ds)
-        display_result(most_year, most_year_count)
-        nan_count(birth_year_ds)
+        display(most_year, most_year_count)
+        null_count(birth_year_ds)
     else:
         print('\nSorry, we don\'t have any Gender or Year of Birth Data to display for {}.\n'.format(city.title()))
 
@@ -234,12 +234,12 @@ def most_common_compute(ds):
          nb_trip - number of trips linked to this most common data
     """
     index = ds.mode()
-    nb_trip = number_trip(ds, index[0])
+    nb_trip = count_trip(ds, index[0])
 
     return index, nb_trip
 
 
-def number_trip(ds, data):
+def count_trip(ds, data):
     """
     Calculates the number of trips in a DataSeries from a specific data
 
@@ -254,7 +254,7 @@ def number_trip(ds, data):
     return nb_trip
 
 
-def display_result(data, nb_trip):
+def display(data, nb_trip):
     """
     Displays a data and the number of trips from that data
 
@@ -286,13 +286,13 @@ def percentage(val, total):
     return round(val/total*100,4)
 
 
-def nan_count(ds):
+def null_count(ds):
     """
     Count if there is any Nan values from a DataSeries and displays it
     """
     if ds.isnull().any():
-        nan_count = ds.isnull().sum()
-        print('Count of No Data: {}. It represents {}% of the trips'.format(nan_count, percentage(nan_count, tot_trip_count)))
+        null_count = ds.isnull().sum()
+        print('Count of No Data: {}. It represents {}% of the trips'.format(null_count, percentage(null_count, tot_trip_count)))
 
 
 def convert_sec(time):
