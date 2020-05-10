@@ -187,7 +187,7 @@ def user_stats(df):
     print('\nCalculating Count of User Types in percentage:')
     user_ds = round(df['User Type'].value_counts(normalize = True)*100, 4)
     #iterates through a loop to display the different user types and the count from it
-    for i in range(len(user_ds)):
+    for i in user_ds:
         print('{}: {}%'.format(user_ds.index[i], user_ds[i]))
     nan_count(df['User Type'])
 
@@ -196,7 +196,7 @@ def user_stats(df):
         print('\nCalculating Count of Gender in percentage:')
         gender_ds = round(df['Gender'].value_counts(normalize=True)*100, 2)
         #iterates through a loop to display the different Gender and the count from it
-        for i in range(len(gender_ds)):
+        for i in gender_ds:
             print('{}: {}%'.format(gender_ds.index[i], gender_ds[i]))
         nan_count(df['Gender'])
 
