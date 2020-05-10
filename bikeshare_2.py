@@ -106,7 +106,7 @@ def time_stats(df):
         #convert most_common_month digit in str through a list comprehension in case of more than one month
         most_common_month = [month_selection[month].title() for month in most_common_month]
         display_result(most_common_month, month_count)
-        nan_count(df['Month'])
+        nan_count(df['Month']) # displays if there is any NaN values 
 
     # display the most common day of week only if all day of week are specified
     if day == 'all':
